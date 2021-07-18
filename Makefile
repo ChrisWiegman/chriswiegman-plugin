@@ -2,7 +2,6 @@ DOCKER_RUN     := @docker run --rm
 CURRENTUSER    := $$(id -u)
 CURRENTGROUP   := $$(id -g)
 COMPOSER_IMAGE := -v $$(pwd):/app --user $(CURRENTUSER):$(CURRENTGROUP) composer
-NODE_IMAGE     := -w /home/node/app -v $$(pwd):/home/node/app --user node chriswiegmanplugin_node_image
 HAS_LANDO      := $(shell command -v lando 2> /dev/null)
 HIGHLIGHT      :=\033[0;32m
 END_HIGHLIGHT  :=\033[0m # No Color
@@ -11,18 +10,7 @@ END_HIGHLIGHT  :=\033[0m # No Color
 build: build-docker build-pot-file  ## Builds all plugin assets and their associated docker images
 
 .PHONY: build-docker
-build-docker: build-docker-node build-docker-php
-
-.PHONY: build-docker-node
-build-docker-node:
-	if [ ! "$$(docker images | grep chriswiegmanplugin_node_image)" ]; then \
-		echo "Building the Node image"; \
-		docker build \
-			-f Docker/Dockerfile-node \
-			--build-arg UID=$(CURRENTUSER) \
-			--build-arg GID=$(CURRENTUSER) \
-			-t chriswiegmanplugin_node_image .; \
-	fi
+build-docker: build-docker-php
 
 .PHONY: build-docker-php
 build-docker-php:
@@ -60,9 +48,6 @@ clean-build:
 destroy: ## Destroys the developer environment completely (this is irreversible)
 	lando destroy -y
 	$(MAKE) clean
-	if [ "$$(docker images | grep chriswiegmanplugin_node_image)" ]; then \
-		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'chriswiegmanplugin_node_image'); \
-	fi
 	if [ "$$(docker images | grep chriswiegmanplugin_phpunit_image)" ]; then \
 		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'chriswiegmanplugin_phpunit_image'); \
 	fi
@@ -87,15 +72,10 @@ help:  ## Display help
 .PHONY: install
 install: | clean-assets clean-build
 	$(MAKE) install-composer
-	$(MAKE) install-npm
 
 .PHONY: install-composer
 install-composer:
 	$(DOCKER_RUN) $(COMPOSER_IMAGE) install
-
-.PHONY: install-npm
-install-npm: | build-docker-node
-	$(DOCKER_RUN) $(NODE_IMAGE) npm install
 
 .PHONY: lando-start
 lando-start:
@@ -162,12 +142,7 @@ stop: lando-stop ## Stops the development environment. This is non-destructive.
 test: test-lint test-phpunit  ## Run all testing
 
 .PHONY: test-lint
-test-lint: test-lint-php test-lint-javascript ## Run linting on both PHP and JavaScript
-
-.PHONY: test-lint-javascript
-test-lint-javascript: | build-docker-node ## Run linting on JavaScript only
-	@echo "Running JavaScript linting"
-	$(DOCKER_RUN) $(NODE_IMAGE) npm run lint
+test-lint: test-lint-php ## Run linting on both PHP and JavaScript
 
 .PHONY: test-lint-php
 test-lint-php: ## Run linting on PHP only
@@ -192,10 +167,6 @@ trust-lando-cert-mac: ## Trust Lando's SSL certificate on your mac
 .PHONY: update-composer
 update-composer:
 	$(DOCKER_RUN) $(COMPOSER_IMAGE) update
-
-.PHONY: update-npm
-update-npm: | build-docker-node
-	$(DOCKER_RUN) $(NODE_IMAGE) npm update
 
 chriswiegman-plugin.zip:
 	@echo "Building release file: chriswiegman-plugin.zip"
