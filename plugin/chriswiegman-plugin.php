@@ -10,7 +10,7 @@
  * Author URI: https://wpengine.com/
  * License: GPLv2
  *
- * @package ChrisWiegman\ChrisWiegman.com_Functionality
+ * @package ChrisWiegman\ChrisWiegman_com_Functionality
  */
 
 /**
