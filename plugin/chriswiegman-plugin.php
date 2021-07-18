@@ -6,7 +6,7 @@
  * Version: 0.0.1
  * Text Domain: chriswiegman-plugin
  * Domain Path: /languages
- * Author: WP Engine
+ * Author: Chris Wiegman
  * Author URI: https://wpengine.com/
  * License: GPLv2
  *
