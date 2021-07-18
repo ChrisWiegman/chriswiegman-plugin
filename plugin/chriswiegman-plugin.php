@@ -30,6 +30,7 @@ function cw_chriswiegman_plugin_loader() {
 	add_action( 'wp_before_admin_bar_render', 'cw_action_wp_before_admin_bar_render' );
 	add_action( 'admin_menu', 'cw_action_admin_menu' );
 	add_action( 'init', 'cw_action_init', 100 );
+	add_action( 'wp_head', 'cw_action_wp_head' );
 
 	add_filter( 'wp_resource_hints', 'cw_filter_wp_resource_hints', 10, 2 );
 
@@ -41,6 +42,19 @@ function cw_chriswiegman_plugin_loader() {
 	remove_action( 'template_redirect', 'rest_output_link_header', 11 );
 	remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 	remove_action( 'wp_head', 'rest_output_link_wp_head' );
+
+}
+
+/**
+ * Action wp_head
+ *
+ * Output the site icon
+ *
+ * @since 1.0.0
+ */
+function cw_action_wp_head() {
+
+	wp_site_icon();
 
 }
 
