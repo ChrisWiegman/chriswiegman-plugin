@@ -1,0 +1,25 @@
+{
+  "name": "chriswiegman-plugin",
+  "description": "Added functionality for ChrisWiegman.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chriswiegman/chriswiegman-plugin"
+  },
+  "author": "Chris Wiegman <contact@chriswiegman.com>",
+  "license": "GPLv2",
+  "homepage": "https://chriswiegman.com",
+  "devDependencies": {
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "^2.3.2"
+  },
+  "scripts": {
+    "lint": "eslint './plugin/**/*.{js,jsx}'",
+    "lint:fix": "eslint './plugin/**/*.{js,jsx}' --fix",
+    "style": "prettier --check .",
+    "style:fix": "prettier --write ."
+  }
+}
