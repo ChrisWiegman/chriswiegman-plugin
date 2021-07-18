@@ -33,6 +33,7 @@ function cw_chriswiegman_plugin_loader() {
 	add_action( 'wp_head', 'cw_action_wp_head' );
 
 	add_filter( 'wp_resource_hints', 'cw_filter_wp_resource_hints', 10, 2 );
+	add_filter( 'feed_links_show_comments_feed', '__return_false' );
 
 	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 	remove_action( 'wp_print_styles', 'print_emoji_styles' );
