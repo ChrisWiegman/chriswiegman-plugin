@@ -3,6 +3,7 @@ CURRENTUSER    := $$(id -u)
 CURRENTGROUP   := $$(id -g)
 COMPOSER_IMAGE := -v $$(pwd):/app --user $(CURRENTUSER):$(CURRENTGROUP) composer
 HAS_LANDO      := $(shell command -v lando 2> /dev/null)
+PLUGIN_VERSION := $$(grep "^ \* Version" plugin/chriswiegman-plugin.php| awk -F' ' '{print $3}' | cut -d ":" -f2 | sed 's/ //g')
 HIGHLIGHT      :=\033[0;32m
 END_HIGHLIGHT  :=\033[0m # No Color
 
@@ -20,9 +21,9 @@ build-docker-php:
 	fi
 
 .PHONY: build-pot-file
-build-pot-file: | start ## Generates a .pot file for use in translations.
+build-pot-file: | lando-start ## Generates a .pot file for use in translations.
 	@echo "Generating .pot file"
-	lando wp --path=./wordpress i18n make-pot plugin
+	lando wp --path=./wordpress i18n make-pot plugin plugin/langues/chriswiegman-plugin.pot
 
 .PHONY: clean
 clean: clean-assets clean-build  ## Removes all build files and the plugin files. This is destructive.
@@ -115,7 +116,7 @@ open-site: ## Open the development site in your default browser
 	open https://chriswiegman-plugin.lndo.site
 
 .PHONY: release
-release: | chriswiegman-plugin.zip ## Generates a release zip of the plugin
+release: | build-pot-file chriswiegman-plugin-version.zip ## Generates a release zip of the plugin
 
 .PHONY: reset
 reset: destroy start ## Resets a running dev environment to new
@@ -168,8 +169,17 @@ trust-lando-cert-mac: ## Trust Lando's SSL certificate on your mac
 update-composer:
 	$(DOCKER_RUN) $(COMPOSER_IMAGE) update
 
-chriswiegman-plugin.zip:
-	@echo "Building release file: chriswiegman-plugin.zip"
-	rm -f chriswiegman-plugin.zip
-	cd plugin; zip -r chriswiegman-plugin.zip *
-	mv plugin/chriswiegman-plugin.zip ./
+.PHONY: chriswiegman-plugin-version.zip
+chriswiegman-plugin-version.zip:
+	@echo "Building release file: chriswiegman-plugin.$(PLUGIN_VERSION).zip"
+	rm -rf chriswiegman-plugin.$(PLUGIN_VERSION).zip
+	rm -rf build
+	mkdir build
+	cp -av plugin build
+	mv build/plugin build/chriswiegman-plugin
+	PLUGIN_VERSION=$(PLUGIN_VERSION) && cd build && zip -r chriswiegman-plugin.$$PLUGIN_VERSION.zip *
+	mv build/chriswiegman-plugin.$(PLUGIN_VERSION).zip ./
+	if [ ! -f ./chriswiegman-plugin.$(PLUGIN_VERSION).zip  ]; then \
+		echo "file not available"; \
+		exit 1; \
+	fi
