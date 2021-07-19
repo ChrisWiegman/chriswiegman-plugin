@@ -203,7 +203,7 @@ assets/js/*.js
 assets/js/*.map
 coverage.clover
 /plugin/scripts/*-min.js
-chriswiegman-plugin.zip
+chriswiegman-plugin.*.zip
 .phpunit.result.cache
 
 # Docker files
