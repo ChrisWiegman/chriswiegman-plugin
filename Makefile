@@ -23,7 +23,7 @@ build-docker-php:
 .PHONY: build-pot-file
 build-pot-file: | lando-start ## Generates a .pot file for use in translations.
 	@echo "Generating .pot file"
-	lando wp --path=./wordpress i18n make-pot plugin plugin/langues/chriswiegman-plugin.pot
+	lando wp --path=./wordpress i18n make-pot plugin plugin/languages/chriswiegman-plugin.pot
 
 .PHONY: clean
 clean: clean-assets clean-build  ## Removes all build files and the plugin files. This is destructive.
