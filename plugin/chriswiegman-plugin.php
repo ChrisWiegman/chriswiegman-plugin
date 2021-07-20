@@ -92,7 +92,6 @@ function cw_action_init() {
 
 	remove_post_type_support( 'post', 'comments' );
 	remove_post_type_support( 'page', 'comments' );
-	add_image_size( 'avatar', 228, 228, true );
 
 }
 
