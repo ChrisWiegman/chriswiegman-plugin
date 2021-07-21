@@ -51,12 +51,13 @@ function cw_chriswiegman_plugin_loader() {
  */
 function cw_action_send_headers() {
 
-	header( 'Strict-Transport-Security: max-age=15768000' );
-	header( 'x-content-type-options: nosniff' );
-	header( 'x-permitted-cross-domain-policies: none' );
-	header( 'x-xss-protection: 1; mode=block' );
-	header( 'x-frame-options: SAMEORIGIN' );
-
+	if ( ! is_admin() ) {
+		header( 'Strict-Transport-Security: max-age=15768000' );
+		header( 'x-content-type-options: nosniff' );
+		header( 'x-permitted-cross-domain-policies: none' );
+		header( 'x-xss-protection: 1; mode=block' );
+		header( 'x-frame-options: SAMEORIGIN' );
+	}
 }
 
 /**
