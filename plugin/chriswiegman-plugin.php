@@ -25,11 +25,30 @@ function cw_chriswiegman_plugin_loader() {
 
 	add_action( 'send_headers', 'cw_action_send_headers' );
 
+	add_filter( 'jetpack_comment_subscription_form', 'cw_filter_jetpack_comment_subscription_form' );
+
 	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 	remove_action( 'wp_print_styles', 'print_emoji_styles' );
 	remove_action( 'wp_head', 'rsd_link' );
 	remove_action( 'wp_head', 'wlwmanifest_link' );
 	remove_action( 'wp_head', 'wp_generator' );
+
+}
+
+/**
+ * Filter jetpack_comment_subscription_form
+ *
+ * Fixes the CSS on the subscription form
+ *
+ * @since 1.2.0
+ *
+ * @param string $str Comment Subscription form HTML output.
+ *
+ * @return string
+ */
+function cw_filter_jetpack_comment_subscription_form( $str ) {
+
+	return preg_replace( '/(<[^>]+) style=".*?"/i', '$1', $str );;
 
 }
 
