@@ -26,6 +26,7 @@ function cw_chriswiegman_plugin_loader() {
 	add_action( 'send_headers', 'cw_action_send_headers' );
 
 	add_filter( 'jetpack_comment_subscription_form', 'cw_filter_jetpack_comment_subscription_form' );
+	add_filter( 'jetpack_sso_bypass_login_forward_wpcom', '__return_true' );
 
 	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 	remove_action( 'wp_print_styles', 'print_emoji_styles' );
