@@ -3,7 +3,7 @@
  * Plugin Name: ChrisWiegman.com Functionality
  * Plugin URI: https://chriswiegman.com/
  * Description: Added functionality for ChrisWiegman.com.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Text Domain: chriswiegman-plugin
  * Domain Path: /languages
  * Author: Chris Wiegman
@@ -49,7 +49,7 @@ function cw_chriswiegman_plugin_loader() {
  */
 function cw_filter_jetpack_comment_subscription_form( $str ) {
 
-	return preg_replace( '/(<[^>]+) style=".*?"/i', '$1', $str );;
+	return preg_replace( '/(<[^>]+) style=".*?"/i', '$1', $str );
 
 }
 
