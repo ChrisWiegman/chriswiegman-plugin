@@ -3,7 +3,7 @@
  * Plugin Name: ChrisWiegman.com Functionality
  * Plugin URI: https://chriswiegman.com/
  * Description: Added functionality for ChrisWiegman.com.
- * Version: 1.3.0
+ * Version: 1.3.1
  * Text Domain: chriswiegman-plugin
  * Domain Path: /languages
  * Author: Chris Wiegman
