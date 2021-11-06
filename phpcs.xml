@@ -3,6 +3,8 @@
 
 	<description>Coding standards for the current project.</description>
 
+	<file>.</file>
+
 	<!-- Only sniff PHP files -->
 	<arg name="extensions" value="php"/>
 
@@ -13,7 +15,6 @@
 	<ini name="memory_limit" value="512M"/>
 
 	    <!-- FILES -->
-    <file>plugin</file>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*.xml</exclude-pattern>

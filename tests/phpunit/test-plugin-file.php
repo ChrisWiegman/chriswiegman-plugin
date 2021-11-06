@@ -28,6 +28,10 @@ class PluginFileTest extends TestCase {
 	 */
 	public function test_cw_chriswiegman_plugin_loader() {
 
+		Monkey\Functions\expect( 'load_plugin_textdomain' )->once();
+
+		cw_chriswiegman_plugin_loader();
+
 		$this->assertTrue( true );
 		// Dummy assertion as we're relying on expectations above.
 

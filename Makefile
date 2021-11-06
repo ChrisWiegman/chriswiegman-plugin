@@ -1,29 +1,17 @@
 DOCKER_RUN     := @docker run --rm
-CURRENTUSER    := $$(id -u)
-CURRENTGROUP   := $$(id -g)
-COMPOSER_IMAGE := -v $$(pwd):/app --user $(CURRENTUSER):$(CURRENTGROUP) composer
+COMPOSER_IMAGE := -v "$$(pwd):/app" --user $$(id -u):$$(id -g) composer
 HAS_LANDO      := $(shell command -v lando 2> /dev/null)
-PLUGIN_VERSION := $$(grep "^ \* Version" plugin/chriswiegman-plugin.php| awk -F' ' '{print $3}' | cut -d ":" -f2 | sed 's/ //g')
+PLUGIN_VERSION := $$(grep "^ \* Version" chriswiegman-plugin.php| awk -F' ' '{print $3}' | cut -d ":" -f2 | sed 's/ //g')
 HIGHLIGHT      :=\033[0;32m
 END_HIGHLIGHT  :=\033[0m # No Color
 
 .PHONY: build
-build: build-docker build-pot-file  ## Builds all plugin assets and their associated docker images
-
-.PHONY: build-docker
-build-docker: build-docker-php
-
-.PHONY: build-docker-php
-build-docker-php:
-	if [ ! "$$(docker images | grep chriswiegmanplugin_phpunit_image)" ]; then \
-		echo "Building the PHP image"; \
-		docker build -f Docker/Dockerfile-php -t chriswiegmanplugin_phpunit_image .; \
-	fi
+build: build-pot-file  ## Generates a .pot file for use in translations.
 
 .PHONY: build-pot-file
-build-pot-file: | lando-start ## Generates a .pot file for use in translations.
+build-pot-file: | lando-start
 	@echo "Generating .pot file"
-	lando wp --path=./wordpress i18n make-pot plugin plugin/languages/chriswiegman-plugin.pot
+	lando wp --path=./wordpress i18n make-pot --exclude="vender,wordpress,tests,node_modules,languages,.vscode,Docker" . ./languages/chriswiegman-plugin.pot
 
 .PHONY: clean
 clean: clean-assets clean-build  ## Removes all build files and the plugin files. This is destructive.
@@ -32,7 +20,7 @@ clean: clean-assets clean-build  ## Removes all build files and the plugin files
 clean-assets:
 	@echo "Cleaning up plugin assets"
 	rm -rf \
-		plugin/languages/*.pot
+		languages/*.pot
 
 .PHONY: clean-build
 clean-build:
@@ -40,18 +28,12 @@ clean-build:
 	rm -rf \
 		node_modules \
 		wordpress \
-		build \
-		vendor \
-		clover.xml \
-		.phpunit.result.cache
+		vendor
 
 .PHONY: destroy
 destroy: ## Destroys the developer environment completely (this is irreversible)
 	lando destroy -y
 	$(MAKE) clean
-	if [ "$$(docker images | grep chriswiegmanplugin_phpunit_image)" ]; then \
-		docker rmi $$(docker images --format '{{.Repository}}:{{.Tag}}' | grep 'chriswiegmanplugin_phpunit_image'); \
-	fi
 
 .PHONY: flush-cache
 flush-cache: ## Clears all server caches enabled within WordPress
@@ -106,14 +88,17 @@ ifdef HAS_LANDO
 	fi
 endif
 
+.PHONY: open
+open: ## Open the development site in your default browser
+	open https://chriswiegman-plugin.lndo.site
+
 .PHONY: open-db
 open-db: ## Open the database in TablePlus
 	@echo "Opening the database for direct access"
 	open mysql://wordpress:wordpress@127.0.0.1:$$(lando info --service=database --path 0.external_connection.port | tr -d "'")/wordpress?enviroment=local&name=$database&safeModeLevel=0&advancedSafeModeLevel=0
 
 .PHONY: open-site
-open-site: ## Open the development site in your default browser
-	open https://chriswiegman-plugin.lndo.site
+open-site: open
 
 .PHONY: release
 release: | build-pot-file chriswiegman-plugin-version.zip ## Generates a release zip of the plugin
@@ -151,14 +136,14 @@ test-lint-php: ## Run linting on PHP only
 	./vendor/bin/phpcs --standard=./phpcs.xml
 
 .PHONY: test-phpunit
-test-phpunit: | build-docker-php ## Run PhpUnit
+test-phpunit: ## Run PhpUnit
 	@echo "Running Unit Tests Without Coverage"
-	docker run -v $$(pwd):/app --rm chriswiegmanplugin_phpunit_image /app/vendor/bin/phpunit
-
-.PHONY: test-phpunit-coverage
-test-phpunit-coverage: | build-docker-php ## Run PhpUnit with code coverage
-	@echo "Running Unit Tests With Coverage"
-	docker run -v $$(pwd):/app --rm --user $(CURRENTUSER):$(CURRENTGROUP) chriswiegmanplugin_phpunit_image /app/vendor/bin/phpunit  --coverage-text --coverage-html build/coverage/
+	docker run \
+		-v "$$(pwd):/app" \
+		--workdir /app \
+		--rm \
+		php:7.4-cli \
+		/app/vendor/bin/phpunit
 
 .PHONY: trust-lando-cert-mac
 trust-lando-cert-mac: ## Trust Lando's SSL certificate on your mac
@@ -173,12 +158,7 @@ update-composer:
 chriswiegman-plugin-version.zip:
 	@echo "Building release file: chriswiegman-plugin.$(PLUGIN_VERSION).zip"
 	rm -rf chriswiegman-plugin.$(PLUGIN_VERSION).zip
-	rm -rf build
-	mkdir build
-	cp -av plugin build
-	mv build/plugin build/chriswiegman-plugin
-	PLUGIN_VERSION=$(PLUGIN_VERSION) && cd build && zip -r chriswiegman-plugin.$$PLUGIN_VERSION.zip *
-	mv build/chriswiegman-plugin.$(PLUGIN_VERSION).zip ./
+	PLUGIN_VERSION=$(PLUGIN_VERSION) && cd ../ && zip --verbose -r -x=@chriswiegman-plugin/.zipignore chriswiegman-plugin/chriswiegman-plugin.$$PLUGIN_VERSION.zip chriswiegman-plugin/*
 	if [ ! -f ./chriswiegman-plugin.$(PLUGIN_VERSION).zip  ]; then \
 		echo "file not available"; \
 		exit 1; \
