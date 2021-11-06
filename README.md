@@ -1,17 +1,17 @@
 # ChrisWiegman.com Functionality
 
-Added functionality for ChrisWiegman.com
+Added functionality for ChrisWiegman.com.
 
 ## Setup Development Environment
 
 Before starting your workstation will need the following:
 
-- [Docker](https://www.docker.com/)
-- [Lando](https://lando.dev/)
+* [Docker](https://www.docker.com/)
+* [Lando](https://lando.dev/)
 
 1. Clone the repository
 
-`git@github.com:wpengine/chriswiegman-plugin.git`
+`git@github.com:<your org>/chriswiegman-plugin.git`
 
 2. Start Lando
 
@@ -24,11 +24,11 @@ When finished, Lando will give you the local URL of your site. You can finish th
 
 WordPress Credentials:
 
-**URL:** _https://chriswiegman-plugin.lndo.site/wp-admin_
+__URL:__ _https://chriswiegman-plugin.lndo.site/wp-admin_
 
-**Admin User:** _admin_
+__Admin User:__ _admin_
 
-**Admin Password:** _password_
+__Admin Password:__ _password_
 
 You can open the site in your default browser with
 
@@ -42,15 +42,17 @@ If you would like to access the database directly, I recommend [TablePlus](https
 make open-db
 ```
 
-_Note: The "open" commands were developed on Mac and may not work on another OS. You can edit the `Makefile` to adjust the appropriate commands for your operating system._
+*Note: The "open" commands were developed on Mac and may not work on another OS. You can edit the `Makefile` to adjust the appropriate commands for your operating system.*
 
 ## Using Xdebug
 
 Xdebug 3 released a [number of changes](https://xdebug.org/docs/upgrade_guide) that affect the way Xdebug works. Namely, it no longer listens on every request and requires a "trigger" to enable the connection. Use one of the following plugins to enable the trigger on your machine:
 
-- [Xdebug Helper for Firefox](https://addons.mozilla.org/en-GB/firefox/addon/xdebug-helper-for-firefox/) ([source](https://github.com/BrianGilbert/xdebug-helper-for-firefox)).
-- [Xdebug Helper for Chrome](https://chrome.google.com/extensions/detail/eadndfjplgieldjbigjakmdgkmoaaaoc) ([source](https://github.com/mac-cain13/xdebug-helper-for-chrome)).
-- [XDebugToggle for Safari](https://apps.apple.com/app/safari-xdebug-toggle/id1437227804?mt=12) ([source](https://github.com/kampfq/SafariXDebugToggle)).
+
+* [Xdebug Helper for Firefox](https://addons.mozilla.org/en-GB/firefox/addon/xdebug-helper-for-firefox/) ([source](https://github.com/BrianGilbert/xdebug-helper-for-firefox)).
+* [Xdebug Helper for Chrome](https://chrome.google.com/extensions/detail/eadndfjplgieldjbigjakmdgkmoaaaoc) ([source](https://github.com/mac-cain13/xdebug-helper-for-chrome)).
+* [XDebugToggle for Safari](https://apps.apple.com/app/safari-xdebug-toggle/id1437227804?mt=12) ([source](https://github.com/kampfq/SafariXDebugToggle)).
+
 
 ## Build and Testing
 
@@ -74,6 +76,16 @@ We also use [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer) with
 make test-lint
 ```
 
+or, to run an individual lint (php or javascript), use one of the following:
+
+```bash
+make test-lint-php
+```
+
+```bash
+make test-lint-javascript
+```
+
 You can run all testing (all lints and unit tests) together with the following:
 
 ```bash
@@ -85,6 +97,10 @@ Screw something up? You can reset your environment with the following. It will s
 ```bash
 make reset
 ```
+
+## Using GitHub Actions
+
+GitHub Actions are used for automated testing on GitHub. Before pushing to GitHub the first time ensure you have initialized the project with `make start` to avoid the actions failing.
 
 ## Preparing for release
 

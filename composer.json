@@ -1,6 +1,6 @@
 {
   "name": "chriswiegman/chriswiegman-plugin",
-  "description": "Added functionality for ChrisWiegman.com",
+  "description": "Added functionality for ChrisWiegman.com.",
   "require-dev": {
     "phpunit/phpunit": "^9.5.10",
     "brain/monkey": "^2.6.0",

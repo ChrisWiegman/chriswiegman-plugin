@@ -7,7 +7,7 @@
  * Text Domain: chriswiegman-plugin
  * Domain Path: /languages
  * Author: Chris Wiegman
- * Author URI: https://wpengine.com/
+ * Author URI: https://chriswiegman.com/
  * License: GPLv2
  *
  * @package ChrisWiegman\ChrisWiegman_com_Functionality

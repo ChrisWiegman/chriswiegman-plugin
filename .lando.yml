@@ -15,7 +15,7 @@ services:
     xdebug: debug
     overrides:
       volumes:
-        - ./plugin:/app/wordpress/wp-content/plugins/chriswiegman-plugin
+        - ./:/app/wordpress/wp-content/plugins/chriswiegman-plugin
 tooling:
   xdebug-on:
     service: appserver

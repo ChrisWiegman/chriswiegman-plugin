@@ -4,14 +4,14 @@
  *
  * Used when clicking "Delete" from inside of WordPress's plugins page.
  *
- * @package ChrisWiegman\ChrisWiegman.com_Functionality
+ * @package ChrisWiegman\ChrisWiegman_com_Functionality
  *
  * @since   1.0.0
  *
  * @author  Chris Wiegman <contact@chriswiegman.com>
  */
 
-namespace ChrisWiegman\ChrisWiegman.com_Functionality\Uninstall;
+namespace ChrisWiegman\ChrisWiegman_com_Functionality\Uninstall;
 
 /**
  * Initialize uninstaller
