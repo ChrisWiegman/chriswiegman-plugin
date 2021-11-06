@@ -17,7 +17,3 @@ jobs:
         run: |
           cd ${GITHUB_WORKSPACE}
           ./vendor/bin/phpcs --standard=./phpcs.xml
-      - name: Install node modules
-        run: npm ci
-      - name: Run ESLint
-        run: npm run lint
