@@ -18,7 +18,7 @@
  *
  * @since 1.0.0
  */
-function cw_plugin_chriswiegman_plugin_loader() {
+function cw_plugin_loader() {
 
 	// Load the text domain.
 	load_plugin_textdomain( 'chriswiegman-plugin', false, dirname( dirname( __FILE__ ) ) . '/languages' );
