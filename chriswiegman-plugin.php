@@ -18,14 +18,14 @@
  *
  * @since 1.0.0
  */
-function cw_chriswiegman_plugin_loader() {
+function cw_plugin_chriswiegman_plugin_loader() {
 
 	// Load the text domain.
 	load_plugin_textdomain( 'chriswiegman-plugin', false, dirname( dirname( __FILE__ ) ) . '/languages' );
 
-	add_action( 'send_headers', 'cw_action_send_headers' );
+	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
 
-	add_filter( 'jetpack_comment_subscription_form', 'cw_filter_jetpack_comment_subscription_form' );
+	add_filter( 'jetpack_comment_subscription_form', 'cw_plugin_filter_jetpack_comment_subscription_form' );
 	add_filter( 'jetpack_sso_bypass_login_forward_wpcom', '__return_true' );
 	add_filter( 'jetpack_honor_dnt_header_for_stats', '__return_true' );
 
@@ -48,7 +48,7 @@ function cw_chriswiegman_plugin_loader() {
  *
  * @return string
  */
-function cw_filter_jetpack_comment_subscription_form( $str ) {
+function cw_plugin_filter_jetpack_comment_subscription_form( $str ) {
 
 	return preg_replace( '/(<[^>]+) style=".*?"/i', '$1', $str );
 
@@ -61,7 +61,7 @@ function cw_filter_jetpack_comment_subscription_form( $str ) {
  *
  * @since 1.0.0
  */
-function cw_action_send_headers() {
+function cw_plugin_action_send_headers() {
 
 	if ( ! is_admin() ) {
 		header( 'Strict-Transport-Security: max-age=15768000' );
@@ -72,4 +72,4 @@ function cw_action_send_headers() {
 	}
 }
 
-add_action( 'plugins_loaded', 'cw_chriswiegman_plugin_loader' );
+add_action( 'plugins_loaded', 'cw_plugin_chriswiegman_plugin_loader' );

@@ -133,7 +133,12 @@ test-lint: test-lint-php ## Run linting on both PHP and JavaScript
 .PHONY: test-lint-php
 test-lint-php: ## Run linting on PHP only
 	@echo "Running PHP linting"
-	./vendor/bin/phpcs --standard=./phpcs.xml
+	docker run \
+		-v "$$(pwd):/app" \
+		--workdir /app \
+		--rm \
+		php:7.4-cli \
+		/app/vendor/bin/phpcs --standard=./phpcs.xml
 
 .PHONY: test-phpunit
 test-phpunit: ## Run PhpUnit
