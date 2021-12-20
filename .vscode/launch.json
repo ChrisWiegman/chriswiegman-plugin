@@ -8,7 +8,7 @@
         "port": 9003,
         "log": true,
         "pathMappings": {
-            "/app/wordpress/wp-content/plugins/chriswiegman-plugin/": "${workspaceFolder}/plugin",
+            "/app/wordpress/wp-content/plugins/chriswiegman-plugin/": "${workspaceFolder}",
             "/app/wordpress/": "${workspaceFolder}/wordpress",
         }
       }
