@@ -165,9 +165,8 @@ update-composer:
 	$(DOCKER_RUN) $(COMPOSER_IMAGE) update
 
 .PHONY: chriswiegman-plugin-version.zip
-chriswiegman-plugin-version.zip:
+chriswiegman-plugin-version.zip: clean-release
 	@echo "Building release file: chriswiegman-plugin.$(PLUGIN_VERSION).zip"
-	rm -rf chriswiegman-plugin.$(PLUGIN_VERSION).zip
 	PLUGIN_VERSION=$(PLUGIN_VERSION) && cd ../ && zip --verbose -r -x=@chriswiegman-plugin/.zipignore chriswiegman-plugin/chriswiegman-plugin.$$PLUGIN_VERSION.zip chriswiegman-plugin/*
 	if [ ! -f ./chriswiegman-plugin.$(PLUGIN_VERSION).zip  ]; then \
 		echo "file not available"; \
