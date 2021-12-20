@@ -14,7 +14,7 @@ build-pot-file: | lando-start
 	lando wp --path=./wordpress i18n make-pot --exclude="vender,wordpress,tests,node_modules,languages,.vscode,Docker" . ./languages/chriswiegman-plugin.pot
 
 .PHONY: clean
-clean: clean-assets clean-build  ## Removes all build files and the plugin files. This is destructive.
+clean: clean-assets clean-build clean-release  ## Removes all build files and the plugin files. This is destructive.
 
 .PHONY: clean-assets
 clean-assets:
@@ -29,6 +29,11 @@ clean-build:
 		node_modules \
 		wordpress \
 		vendor
+
+.PHONY: clean-release
+clean-release:
+	@echo "Cleaning up release file"
+	rm -f chriswiegman-plugin*.zip
 
 .PHONY: destroy
 destroy: ## Destroys the developer environment completely (this is irreversible)
