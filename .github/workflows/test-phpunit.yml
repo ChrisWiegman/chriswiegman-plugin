@@ -1,0 +1,31 @@
+name: PhpUnit Tests
+
+on:
+    push:
+      branches:
+        - main
+    pull_request:
+      types: [opened,synchronize,ready_for_review,edited]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout project
+          uses: actions/checkout@v4
+
+        - name: Setup Correct PHP Version
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.4'
+            tools: composer:v2
+            coverage: xdebug
+
+        - name: Install Composer dependencies
+          run: |
+            composer install
+
+        - name: PHPUnit Tests
+          uses: php-actions/phpunit@v4
+          with:
+            configuration: phpunit.xml.dist

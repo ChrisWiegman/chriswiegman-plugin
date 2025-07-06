@@ -1,0 +1,25 @@
+{
+    "name": "chriswiegman-plugin",
+    "description": "Basic functionality for ChrisWiegman.com.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ChrisWiegman/chriswiegman-plugin"
+    },
+    "author": "Chris Wiegman <contact@chriswiegman.com>",
+    "license": "GPLv3",
+    "homepage": "https://chriswiegman.com/",
+    "devDependencies": {
+        "@playwright/test": "^1.53.1",
+        "@types/node": "^24.0.7",
+        "@wordpress/e2e-test-utils-playwright": "^1.26.0",
+        "@wordpress/env": "^10.26.0",
+        "@wordpress/scripts": "^30.19.0"
+    },
+    "engines": {
+        "npm": ">=10.0.0 <12.0.0",
+        "node": ">=22.0.0 <23.0.0"
+    },
+    "scripts": {
+        "test": "wp-scripts test-playwright --config tests/e2e/playwright.config.js"
+    }
+}

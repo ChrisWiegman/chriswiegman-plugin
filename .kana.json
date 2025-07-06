@@ -1,0 +1,22 @@
+{
+	"activate": true,
+	"automaticLogin": true,
+	"database": "mariadb",
+	"databaseClient": "phpmyadmin",
+	"databaseVersion": "11",
+	"environment": "local",
+	"mailpit": true,
+	"multisite": "none",
+	"php": "8.4",
+	"plugins": [
+		"debug-bar",
+		"query-monitor"
+	],
+	"removeDefaultPlugins": true,
+	"scriptDebug": true,
+	"ssl": false,
+	"theme": "",
+	"type": "plugin",
+	"wpdebug": true,
+	"xdebug": false
+}

@@ -1,0 +1,49 @@
+name: E2E Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened,synchronize,ready_for_review,edited]
+
+# Cancel previous workflow run groups that have not completed.
+concurrency:
+  # Group workflow runs by workflow name, along with the head branch ref of the pull request
+  # or otherwise the branch or tag ref.
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+
+    - name: Install Node dependencies
+      run: npm ci
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Start WordPress Environment and activate plugin
+      run: |
+        npx wp-env start
+        npx wp-env run cli wp plugin activate chriswiegman-plugin
+
+    - name: Run E2E tests
+      run: npm run test
+
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-report
+        path: artifacts/
+        retention-days: 30
