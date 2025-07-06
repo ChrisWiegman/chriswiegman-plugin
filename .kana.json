@@ -9,12 +9,19 @@
 	"multisite": "none",
 	"php": "8.4",
 	"plugins": [
+		"csp-manager",
 		"debug-bar",
-		"query-monitor"
+		"disable-floc",
+		"pods",
+		"query-monitor",
+		"rss-featured-image",
+		"syntax-highlighting-code-block",
+		"two-factor",
+		"wordpress-seo"
 	],
 	"removeDefaultPlugins": true,
 	"scriptDebug": true,
-	"ssl": false,
+	"ssl": true,
 	"theme": "",
 	"type": "plugin",
 	"wpdebug": true,
