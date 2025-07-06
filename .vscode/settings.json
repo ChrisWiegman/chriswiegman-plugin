@@ -1,4 +1,0 @@
-{
-    "phpSniffer.autoDetect": true,
-    "intelephense.diagnostics.undefinedConstants": false,
-}
