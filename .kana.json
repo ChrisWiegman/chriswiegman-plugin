@@ -9,12 +9,8 @@
 	"multisite": "none",
 	"php": "8.4",
 	"plugins": [
-		"csp-manager",
 		"debug-bar",
-		"disable-floc",
-		"pods",
 		"query-monitor",
-		"rss-featured-image",
 		"syntax-highlighting-code-block",
 		"two-factor",
 		"wordpress-seo"
@@ -22,7 +18,7 @@
 	"removeDefaultPlugins": true,
 	"scriptDebug": true,
 	"ssl": true,
-	"theme": "",
+	"theme": "ollie",
 	"type": "plugin",
 	"wpdebug": true,
 	"xdebug": false
