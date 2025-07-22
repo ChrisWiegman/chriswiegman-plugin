@@ -10,7 +10,8 @@ clean:
 		vendor \
 		.vscode/*.log \
 		artifacts \
-		.phpunit.result.cache
+		.phpunit.result.cache \
+		build
 
 .PHONY: destroy
 destroy: ## Destroys the developer environment completely (this is irreversible)
