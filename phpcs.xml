@@ -4,6 +4,9 @@
 
 	<file>.</file>
 
+	<config name="testVersion" value="8.0-"/>
+	<config name="minimum_wp_version" value="6.0"/>
+
 	<!-- Exclude WP Core folders and files from being checked. -->
     <exclude-pattern>*/node_modules/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
@@ -12,23 +15,21 @@
     <exclude-pattern>*.js</exclude-pattern>
     <exclude-pattern>*/wordpress/*</exclude-pattern>
 	<exclude-pattern>*/assets/*</exclude-pattern>
+	<exclude-pattern>*/build/*</exclude-pattern>
 
 	<arg name="basepath" value="."/>
-
 	<arg name="parallel" value="8"/>
 
-	<rule ref="WordPress"/>
-
 	<rule ref="VariableAnalysis"/>
-
 	<rule ref="Generic.Commenting.Todo"/>
 
-	<config name="testVersion" value="8.0-"/>
+	<rule ref="WordPress">
+		<exclude name="Generic.Functions.CallTimePassByReference" />
+	</rule>
+
 	<rule ref="PHPCompatibilityWP">
 		<include-pattern>*\.php</include-pattern>
 	</rule>
-
-	<config name="minimum_wp_version" value="6.0"/>
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
@@ -40,7 +41,9 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="cw_plugin" />
+			<property name="text_domain" type="array">
+				<element value="cw_plugin" />
+			</property>
 		</properties>
 	</rule>
 </ruleset>
