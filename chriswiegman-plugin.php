@@ -22,7 +22,7 @@ function cw_plugin_plugin_loader() {
 	// Load the text domain.
 	load_plugin_textdomain( 'cw_plugin', false, dirname( __DIR__ ) . '/languages' );
 
-	// Remove extra hooks
+	// Remove extra hooks.
 	remove_action( 'wp_head', 'wp_generator' );
 
 	// Add new folders and actions.
