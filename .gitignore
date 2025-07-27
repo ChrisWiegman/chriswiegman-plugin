@@ -70,3 +70,4 @@ assets/*.map
 /playwright/.cache/
 /artifacts/
 .phpunit.result.cache
+database/
