@@ -9,9 +9,14 @@
 	"multisite": "none",
 	"php": "8.4",
 	"plugins": [
+		"advanced-custom-fields",
+		"advanced-query-loop",
+		"block-visibility",
 		"debug-bar",
+		"ninja-forms",
 		"query-monitor",
 		"syntax-highlighting-code-block",
+		"icon-block",
 		"two-factor",
 		"wordpress-seo"
 	],
