@@ -8,6 +8,11 @@ on:
     pull_request:
       types: [opened,synchronize,ready_for_review,edited]
 
+# Cancel previous workflow run groups that have not completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-test:
     runs-on: ubuntu-24.04
