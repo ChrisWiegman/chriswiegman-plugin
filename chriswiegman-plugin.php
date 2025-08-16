@@ -22,6 +22,8 @@ function cw_plugin_plugin_loader() {
 	// Load the text domain.
 	load_plugin_textdomain( 'cw_plugin', false, dirname( __DIR__ ) . '/languages' );
 
+	// Add new folders and actions.
+	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
 	add_action( 'rss2_item', 'cw_plugin_add_featured_image_to_feed' );
 }
 
@@ -40,6 +42,23 @@ function cw_plugin_add_featured_image_to_feed() {
 		$type           = get_post_mime_type( $attachment_id );
 
 		printf( '<enclosure url="%s" length="%d" type="%s" />', esc_url( $url ), esc_attr( $length ), esc_attr( $type ) );
+	}
+}
+
+/**
+ * Action send_headers
+ *
+ * Set the security headers.
+ *
+ * @since 2.1.0
+ */
+function cw_plugin_action_send_headers() {
+	if ( ! is_admin() ) {
+		header( 'x-content-type-options: nosniff' );
+		header( 'x-xss-protection: 1; mode=block' );
+		header( 'x-frame-options: SAMEORIGIN' );
+		header( 'Referrer-Policy: no-referrer-when-downgrade' );
+		header( 'Permissions-Policy: geolocation=(), midi=(),sync-xhr=(),accelerometer=(), gyroscope=(), magnetometer=(), camera=(), fullscreen=(self)' );
 	}
 }
 
