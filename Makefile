@@ -1,8 +1,81 @@
+PLUGIN_VERSION  := $$(grep "Version:" chriswiegman-plugin.php | awk -F' ' '{print $3}' | cut -d ":" -f2 | sed 's/ //g')
+ARGS            = `arg="$(filter-out $@,$(MAKECMDGOALS))" && echo $${arg:-${1}}`
+
 %:
 	@:
 
+.PHONY: change
+change:
+	docker run \
+		--rm \
+		--platform linux/amd64 \
+		--mount type=bind,source=$(PWD),target=/src \
+		-w /src \
+		-it \
+		ghcr.io/miniscruff/changie \
+		new
+
+.PHONY: changelog
+changelog:
+	docker run \
+		--rm \
+		--platform linux/amd64 \
+		--mount type=bind,source=$(PWD),target=/src \
+		-w /src \
+		-it \
+		ghcr.io/miniscruff/changie \
+		batch $(call ARGS,defaultstring)
+	docker run \
+		--rm \
+		--platform linux/amd64 \
+		--mount type=bind,source=$(PWD),target=/src \
+		-w /src \
+		-it \
+		ghcr.io/miniscruff/changie \
+		merge
+
+.PHONY: chriswiegman-plugin-version.zip
+chriswiegman-plugin-version.zip: clean-release
+	@echo "Building release file: chriswiegman-plugin.$(PLUGIN_VERSION).zip"
+	PLUGIN_VERSION=$(PLUGIN_VERSION) && \
+		cd ../ && \
+		zip \
+		--verbose \
+		--recurse-paths \
+		--exclude="*.changes/*" \
+		--exclude="*.git/*" \
+		--exclude="*.github/*" \
+		--exclude="*.vscode/*" \
+		--exclude="*node_modules/*" \
+		--exclude="*.changie.yml" \
+		--exclude="*.gitignore" \
+		--exclude="*.kana.json" \
+		--exclude="*.npmrc" \
+		--exclude="*.nvmrc" \
+		--exclude="*.wp-env.json" \
+		--exclude="*CHANGELOG.md" \
+		--exclude="*changie.yaml" \
+		--exclude="*composer.json" \
+		--exclude="*composer.lock" \
+		--exclude="*Makefile" \
+		--exclude="*package-lock.json" \
+		--exclude="*package.json" \
+		--exclude="*phpcs.xml" \
+		--exclude="*phpunit.xml.dist" \
+		--exclude="*README.md" \
+		--exclude="*vendor/*" \
+		--exclude="*wordpress/*" \
+		--exclude="*database/*" \
+		--exclude="*tests/*" \
+		chriswiegman-plugin/chriswiegman-plugin.$$PLUGIN_VERSION.zip \
+		chriswiegman-plugin/*
+	if [ ! -f ./chriswiegman-plugin.$(PLUGIN_VERSION).zip  ]; then \
+		echo "file not available"; \
+		exit 1; \
+	fi
+
 .PHONY: clean
-clean:
+clean: clean-release
 	@echo "Cleaning up development artifacts"
 	rm -rf \
 		node_modules \
@@ -12,6 +85,11 @@ clean:
 		artifacts \
 		.phpunit.result.cache \
 		build
+
+.PHONY: clean-release
+clean-release:
+	@echo "Cleaning up release file"
+	rm -f chriswiegman-plugin*.zip
 
 .PHONY: destroy
 destroy: ## Destroys the developer environment completely (this is irreversible)
@@ -37,6 +115,9 @@ install-composer:
 .PHONY: install-npm
 install-npm:
 	npm ci
+
+.PHONY: release
+release: chriswiegman-plugin-version.zip
 
 .PHONY: reset
 reset: destroy start ## Resets a running dev environment to new
