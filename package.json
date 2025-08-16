@@ -9,11 +9,11 @@
     "license": "GPLv3",
     "homepage": "https://chriswiegman.com/",
     "devDependencies": {
-        "@playwright/test": "^1.54.1",
-        "@types/node": "^24.1.0",
-        "@wordpress/e2e-test-utils-playwright": "^1.27.0",
-        "@wordpress/env": "^10.27.0",
-        "@wordpress/scripts": "^30.20.0"
+        "@playwright/test": "^1.54.2",
+        "@types/node": "^24.3.0",
+        "@wordpress/e2e-test-utils-playwright": "^1.28.0",
+        "@wordpress/env": "^10.28.0",
+        "@wordpress/scripts": "^30.21.0"
     },
     "engines": {
         "npm": ">=10.0.0 <12.0.0",
