@@ -22,27 +22,24 @@ function cw_plugin_plugin_loader() {
 	// Load the text domain.
 	load_plugin_textdomain( 'cw_plugin', false, dirname( __DIR__ ) . '/languages' );
 
-	// Remove extra hooks.
-	remove_action( 'wp_head', 'wp_generator' );
-
-	// Add new folders and actions.
-	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
+	add_action( 'rss2_item', 'cw_plugin_add_featured_image_to_feed' );
 }
 
 /**
- * Action send_headers
- *
- * Set the security headers.
+ * Adds the featured image to the RSS feed
  *
  * @since 2.0.0
  */
-function cw_plugin_action_send_headers() {
-	if ( ! is_admin() ) {
-		header( 'Strict-Transport-Security: max-age=15768000' );
-		header( 'x-content-type-options: nosniff' );
-		header( 'x-permitted-cross-domain-policies: none' );
-		header( 'x-xss-protection: 1; mode=block' );
-		header( 'x-frame-options: SAMEORIGIN' );
+function cw_plugin_add_featured_image_to_feed() {
+	global $post;
+	if ( has_post_thumbnail( $post->ID ) ) {
+		$attachment_id  = get_post_thumbnail_id( $post->ID );
+		$featured_image = wp_get_attachment_image_src( $attachment_id, 'post-thumbnail' );
+		$url            = $featured_image[0];
+		$length         = filesize( get_attached_file( $attachment_id ) );
+		$type           = get_post_mime_type( $attachment_id );
+
+		printf( '<enclosure url="%s" length="%d" type="%s" />', esc_url( $url ), esc_attr( $length ), esc_attr( $type ) );
 	}
 }
 
