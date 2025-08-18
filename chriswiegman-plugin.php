@@ -23,8 +23,9 @@ function cw_plugin_plugin_loader() {
 	load_plugin_textdomain( 'cw_plugin', false, dirname( __DIR__ ) . '/languages' );
 
 	// Add new folders and actions.
-	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
 	add_action( 'rss2_item', 'cw_plugin_add_featured_image_to_feed' );
+	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
+	add_action( 'wp_head', 'cw_plugin_add_mastodon_ownership' );
 }
 
 /**
@@ -60,6 +61,17 @@ function cw_plugin_action_send_headers() {
 		header( 'Referrer-Policy: no-referrer-when-downgrade' );
 		header( 'Permissions-Policy: geolocation=(), midi=(),sync-xhr=(),accelerometer=(), gyroscope=(), magnetometer=(), camera=(), fullscreen=(self)' );
 	}
+}
+
+/**
+ * Adds the fediverse:creator meta tag to verify authorship for Mastodon.
+ *
+ * @since 2.2.0
+ */
+function cw_plugin_add_mastodon_ownership() {
+	?>
+	<meta name="fediverse:creator" content="@chris@mastodon.chriswiegman.com">
+	<?php
 }
 
 add_action( 'plugins_loaded', 'cw_plugin_plugin_loader' );
