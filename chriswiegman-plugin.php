@@ -26,7 +26,6 @@ function cw_plugin_plugin_loader() {
 	add_action( 'rss2_item', 'cw_plugin_add_featured_image_enclosure_to_feed' );
 	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
 	add_action( 'wp_head', 'cw_plugin_add_mastodon_ownership' );
-	add_filter( 'the_excerpt_rss', 'cw_plugin_add_featured_image_to_feed' );
 	add_filter( 'the_content_feed', 'cw_plugin_add_featured_image_to_feed' );
 }
 
