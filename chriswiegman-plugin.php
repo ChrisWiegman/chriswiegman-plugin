@@ -89,7 +89,20 @@ function cw_plugin_add_featured_image_to_feed( $content ) {
 	global $post;
 
 	if ( has_post_thumbnail( $post->ID ) ) {
-		$content = '<div>' . get_the_post_thumbnail( $post->ID, 'medium', array( 'style' => 'margin-bottom: 15px;' ) ) . '</div>' . $content;
+		add_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
+
+		$content = '<div>' . get_the_post_thumbnail(
+			$post->ID,
+			'large',
+			array(
+				'fetchpriority' => false,
+				'decoding'      => false,
+				'style'         => 'margin-bottom: 15px;',
+				'class'         => false,
+			)
+		) . '</div>' . $content;
+
+		remove_filter( 'wp_calculate_image_srcset_meta', '__return_null' );
 	}
 
 	return $content;
