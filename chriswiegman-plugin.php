@@ -23,9 +23,11 @@ function cw_plugin_plugin_loader() {
 	load_plugin_textdomain( 'cw_plugin', false, dirname( __DIR__ ) . '/languages' );
 
 	// Add new folders and actions.
-	add_action( 'rss2_item', 'cw_plugin_add_featured_image_to_feed' );
+	add_action( 'rss2_item', 'cw_plugin_add_featured_image_enclosure_to_feed' );
 	add_action( 'send_headers', 'cw_plugin_action_send_headers' );
 	add_action( 'wp_head', 'cw_plugin_add_mastodon_ownership' );
+	add_filter( 'the_excerpt_rss', 'cw_plugin_add_featured_image_to_feed' );
+	add_filter( 'the_content_feed', 'cw_plugin_add_featured_image_to_feed' );
 }
 
 /**
@@ -33,8 +35,9 @@ function cw_plugin_plugin_loader() {
  *
  * @since 2.0.0
  */
-function cw_plugin_add_featured_image_to_feed() {
+function cw_plugin_add_featured_image_enclosure_to_feed() {
 	global $post;
+
 	if ( has_post_thumbnail( $post->ID ) ) {
 		$attachment_id  = get_post_thumbnail_id( $post->ID );
 		$featured_image = wp_get_attachment_image_src( $attachment_id, 'post-thumbnail' );
@@ -72,6 +75,25 @@ function cw_plugin_add_mastodon_ownership() {
 	?>
 	<meta name="fediverse:creator" content="@chris@mastodon.chriswiegman.com">
 	<?php
+}
+
+/**
+ * Adds the image tag to the content itself to get the featured image in the RSS feed.
+ *
+ * @since 2.2.1
+ *
+ * @param string $content The post content.
+ *
+ * @return string The filtered post content with the image pre-pended.
+ */
+function cw_plugin_add_featured_image_to_feed( $content ) {
+	global $post;
+
+	if ( has_post_thumbnail( $post->ID ) ) {
+		$content = '<div>' . get_the_post_thumbnail( $post->ID, 'medium', array( 'style' => 'margin-bottom: 15px;' ) ) . '</div>' . $content;
+	}
+
+	return $content;
 }
 
 add_action( 'plugins_loaded', 'cw_plugin_plugin_loader' );
