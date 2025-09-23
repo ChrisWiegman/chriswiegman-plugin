@@ -6,6 +6,7 @@
     "xdebug.php-debug",
     "johnbillion.vscode-wordpress-hooks",
     "smelukov.vscode-csstree",
-    "MrChetan.phpstorm-parameter-hints-in-vscode"
+    "MrChetan.phpstorm-parameter-hints-in-vscode",
+    "pflannery.vscode-versionlens"
   ]
 }
