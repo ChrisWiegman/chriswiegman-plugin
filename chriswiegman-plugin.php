@@ -3,7 +3,7 @@
  * Plugin Name: ChrisWiegman.com
  * Plugin URI: https://chriswiegman.com/
  * Description: Basic Functionality for ChrisWiegman.com
- * Version: 2.2.3
+ * Version: 2.2.4
  * Text Domain: cw_plugin
  * Domain Path: /languages
  * Author: Chris Wiegman
