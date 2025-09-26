@@ -84,7 +84,8 @@ clean: clean-release
 		.vscode/*.log \
 		artifacts \
 		.phpunit.result.cache \
-		build
+		build \
+		database
 
 .PHONY: clean-release
 clean-release:
