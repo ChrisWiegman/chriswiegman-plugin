@@ -79,13 +79,11 @@ clean: clean-release
 	@echo "Cleaning up development artifacts"
 	rm -rf \
 		node_modules \
-		wordpress \
 		vendor \
 		.vscode/*.log \
 		artifacts \
 		.phpunit.result.cache \
-		build \
-		database
+		build
 
 .PHONY: clean-release
 clean-release:
@@ -94,9 +92,7 @@ clean-release:
 
 .PHONY: destroy
 destroy: ## Destroys the developer environment completely (this is irreversible)
-	if [ -d ./wordpress/ ]; then \
-		kana destroy --force; \
-	fi
+	npx wp-env destroy
 	$(MAKE) clean
 
 .PHONY: help
@@ -125,18 +121,14 @@ reset: destroy start ## Resets a running dev environment to new
 
 .PHONY: start
 start: ## Starts the development environment including downloading and setting up everything it needs
-	if [ ! -d ./wordpress/ ]; then \
+	if [ ! -d ./node_modules/ ]; then \
 		$(MAKE) install; \
 	fi
-	if [ ! "$$(docker ps | grep kana-chriswiegman-plugin-wordpress)" ]; then \
-		kana start; \
-	fi
+	npm run start
 
 .PHONY: stop
 stop: ## Stops the development environment. This is non-destructive.
-	if [ "$$(docker ps | grep kana-chriswiegman-plugin-wordpress)" ]; then \
-		kana stop; \
-	fi
+	npm run stop
 
 .PHONY: test
 test: test-lint test-phpunit  ## Run all testing

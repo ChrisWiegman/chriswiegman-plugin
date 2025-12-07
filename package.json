@@ -20,6 +20,8 @@
         "node": ">=22.0.0 <25.0.0"
     },
     "scripts": {
-        "test": "wp-scripts test-playwright --config tests/e2e/playwright.config.js"
+        "test": "wp-scripts test-playwright --config tests/e2e/playwright.config.js",
+        "start": "wp-env start --xdebug=profile,trace,debug",
+        "stop": "wp-env stop"
     }
 }
